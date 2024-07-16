@@ -38,7 +38,7 @@ const VisitDropdown: React.FC = () => {
 
   return (
     <div className="container px-4 py-4 bg-light">
-      <div className="row justify-content-start mb-3">
+      <div className="row justify-content-between mb-3">
         <div className="col-2">
           <select
             className="form-select"
@@ -55,13 +55,63 @@ const VisitDropdown: React.FC = () => {
             ))}
           </select>
         </div>
+        <div className="col-4">
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="all"
+            />
+            <label className="form-check-label" htmlFor="inlineRadio1">
+              All
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio2"
+              value="pending"
+            />
+            <label className="form-check-label" htmlFor="inlineRadio1">
+              Pending
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio3"
+              value="running"
+            />
+            <label className="form-check-label" htmlFor="inlineRadio1">
+              Running
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio4"
+              value="failed"
+            />
+            <label className="form-check-label" htmlFor="inlineRadio1">
+              Failed
+            </label>
+          </div>
+        </div>
       </div>
       {selectedVisit && (
         <div>
           {selectedVisit.workflows.map((workflow) => (
             <div key={workflow.id} className="row align-items-center mb-2 py-2">
               <div className="col-8">
-                <h4>Workflow {workflow.id}</h4>
+                <h5>Workflow {workflow.id}</h5>
               </div>
               <div className="col-4 text-end">
                 <div className="dropdown">
