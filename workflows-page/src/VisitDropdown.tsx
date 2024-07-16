@@ -38,7 +38,7 @@ const VisitDropdown: React.FC = () => {
 
   return (
     <div className="container px-4 py-4 bg-light">
-      <div className="row justify-content-start">
+      <div className="row justify-content-start mb-3">
         <div className="col-2">
           <select
             className="form-select"
@@ -56,16 +56,43 @@ const VisitDropdown: React.FC = () => {
           </select>
         </div>
       </div>
-      <div className="row justify-content-start py-2">
-        <div className="col">
-          {selectedVisit && (
-            <div className="mt-3">
-              <h2>{selectedVisit.name}</h2>
-              <pre>{JSON.stringify(selectedVisit, null, 2)}</pre>
+      {selectedVisit && (
+        <div>
+          {selectedVisit.workflows.map((workflow) => (
+            <div key={workflow.id} className="row align-items-center mb-2 py-2">
+              <div className="col-8">
+                <h4>Workflow {workflow.id}</h4>
+              </div>
+              <div className="col-4 text-end">
+                <div className="dropdown">
+                  <button
+                    className="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id={`dropdownMenuButton${workflow.id}`}
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Tasks
+                  </button>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby={`dropdownMenuButton${workflow.id}`}
+                  >
+                    {workflow.tasks.map((task, index) => (
+                      <li key={index}>
+                        <a className="dropdown-item" href="#">
+                          <strong>Task:</strong> {task.name} <br />
+                          <strong>Status:</strong> {task.status}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
-          )}
+          ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };
