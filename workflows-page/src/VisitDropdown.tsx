@@ -38,7 +38,7 @@ const VisitDropdown: React.FC = () => {
 
   return (
     <div className="container px-4 py-4 bg-dark">
-      <div className="row justify-content-between mb-3">
+      <div className="row justify-content-between">
         <div className="col-2">
           <select
             className="form-select bg-dark-subtle"
@@ -56,51 +56,51 @@ const VisitDropdown: React.FC = () => {
           </select>
         </div>
         <div className="col-4">
-          <div className="form-check form-check-inline">
+          <div
+            className="btn-group"
+            role="group"
+            aria-label="Basic checkbox toggle button group"
+          >
             <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio1"
-              value="all"
+              type="checkbox"
+              className="btn-check"
+              id="btncheck1"
+              autoComplete="off"
+              defaultChecked
             />
-            <label className="form-check-label" htmlFor="inlineRadio1">
-              All
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio2"
-              value="pending"
-            />
-            <label className="form-check-label" htmlFor="inlineRadio1">
-              Pending
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio3"
-              value="running"
-            />
-            <label className="form-check-label" htmlFor="inlineRadio1">
+            <label className="btn btn-outline-primary" htmlFor="btncheck1">
               Running
             </label>
-          </div>
-          <div className="form-check form-check-inline">
+
             <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio4"
-              value="failed"
+              type="checkbox"
+              className="btn-check"
+              id="btncheck2"
+              autoComplete="off"
+              defaultChecked
             />
-            <label className="form-check-label" htmlFor="inlineRadio1">
+            <label className="btn btn-outline-primary" htmlFor="btncheck2">
+              Pending
+            </label>
+
+            <input
+              type="checkbox"
+              className="btn-check"
+              id="btncheck3"
+              autoComplete="off"
+              defaultChecked
+            />
+            <label className="btn btn-outline-primary" htmlFor="btncheck3">
+              Completed
+            </label>
+            <input
+              type="checkbox"
+              className="btn-check"
+              id="btncheck4"
+              autoComplete="off"
+              defaultChecked
+            />
+            <label className="btn btn-outline-primary" htmlFor="btncheck4">
               Failed
             </label>
           </div>
