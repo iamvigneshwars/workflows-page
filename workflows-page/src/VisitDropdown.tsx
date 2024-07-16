@@ -37,11 +37,11 @@ const VisitDropdown: React.FC = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="container px-4 py-4 bg-light">
+    <div className="container px-4 py-4 bg-dark">
       <div className="row justify-content-between mb-3">
         <div className="col-2">
           <select
-            className="form-select"
+            className="form-select bg-dark-subtle"
             onChange={handleChange}
             defaultValue=""
           >
@@ -112,7 +112,7 @@ const VisitDropdown: React.FC = () => {
           {selectedVisit.workflows.map((workflow) => (
             <div
               key={workflow.id}
-              className="row align-items-center mb-2 py-2 shadow-lg bg-body-tertiary rounded"
+              className="row align-items-center mb-2 py-2 shadow-lg rounded"
             >
               <div className="col-8">
                 <h5>Workflow {workflow.id}</h5>
