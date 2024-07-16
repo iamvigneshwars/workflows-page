@@ -36,54 +36,35 @@ const VisitDropdown: React.FC = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  //   return (
-  //     <div className="container mt-4">
-  //       <div className="row justify-content-center">
-  //         <div className="col-md-6">
-  //           <select
-  //             className="form-select"
-  //             onChange={handleChange}
-  //             defaultValue=""
-  //           >
-  //             <option value="" disabled>
-  //               Select a visit
-  //             </option>
-  //             {visits.map((visit) => (
-  //               <option key={visit.id} value={visit.id}>
-  //                 {visit.name}
-  //               </option>
-  //             ))}
-  //           </select>
-  //           {selectedVisit && (
-  //             <div className="mt-3">
-  //               <h2>{selectedVisit.name}</h2>
-  //               <pre>{JSON.stringify(selectedVisit, null, 2)}</pre>
-  //             </div>
-  //           )}
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-
   return (
-    <div className="container mt-4">
-      <div className="col-md-6">
-        <select className="form-select" onChange={handleChange} defaultValue="">
-          <option value="" disabled>
-            Select a visit
-          </option>
-          {visits.map((visit) => (
-            <option key={visit.id} value={visit.id}>
-              {visit.name}
+    <div className="container px-4 py-4 bg-light">
+      <div className="row justify-content-start">
+        <div className="col-2">
+          <select
+            className="form-select"
+            onChange={handleChange}
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select a visit
             </option>
-          ))}
-        </select>
-        {selectedVisit && (
-          <div className="mt-3">
-            <h2>{selectedVisit.name}</h2>
-            <pre>{JSON.stringify(selectedVisit, null, 2)}</pre>
-          </div>
-        )}
+            {visits.map((visit) => (
+              <option key={visit.id} value={visit.id}>
+                {visit.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className="row justify-content-start py-2">
+        <div className="col">
+          {selectedVisit && (
+            <div className="mt-3">
+              <h2>{selectedVisit.name}</h2>
+              <pre>{JSON.stringify(selectedVisit, null, 2)}</pre>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
