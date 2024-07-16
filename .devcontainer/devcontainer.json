@@ -1,0 +1,22 @@
+{
+    "name": "workflow-page",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "node",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+            "ms-kubernetes-tools.vscode-kubernetes-tools",
+            "tamasfe.even-better-toml",
+            "tsandall.opa",
+            "esbenp.prettier-vscode"
+        ]
+      }
+    },
+    "features": {
+      "ghcr.io/devcontainers/features/common-utils:2.4.2": {
+        "username": "none",
+        "upgradePackages": false
+      }
+    },
+    "workspaceFolder": "/workspace"
+  }
