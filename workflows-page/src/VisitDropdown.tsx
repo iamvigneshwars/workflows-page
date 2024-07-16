@@ -106,10 +106,14 @@ const VisitDropdown: React.FC = () => {
           </div>
         </div>
       </div>
+      <hr className="hr" />
       {selectedVisit && (
         <div>
           {selectedVisit.workflows.map((workflow) => (
-            <div key={workflow.id} className="row align-items-center mb-2 py-2">
+            <div
+              key={workflow.id}
+              className="row align-items-center mb-2 py-2 shadow-lg bg-body-tertiary rounded"
+            >
               <div className="col-8">
                 <h5>Workflow {workflow.id}</h5>
               </div>
