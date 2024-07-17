@@ -7,6 +7,7 @@ export const GET_VISITS = gql`
       name
       workflows {
         id
+        status
         tasks {
           workflow_id
           name
@@ -30,6 +31,7 @@ export interface Task {
 
 export interface Workflow {
   id: number;
+  status: String;
   tasks: Task[];
 }
 

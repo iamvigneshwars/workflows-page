@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { request } from "graphql-request";
 import { GET_VISITS, Visit, GetVisitsResponse } from "./graphql";
+import Checkboxes from "./components/WorkflowCheckboxes";
 
 const endpoint = "http://localhost:4001/";
 
@@ -37,7 +38,7 @@ const VisitDropdown: React.FC = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="container px-4 py-4 bg-dark">
+    <div className="container px-4 py-4 bg-light">
       <div className="row justify-content-between">
         <div className="col-2">
           <select
@@ -55,55 +56,8 @@ const VisitDropdown: React.FC = () => {
             ))}
           </select>
         </div>
-        <div className="col-4">
-          <div
-            className="btn-group"
-            role="group"
-            aria-label="Basic checkbox toggle button group"
-          >
-            <input
-              type="checkbox"
-              className="btn-check"
-              id="btncheck1"
-              autoComplete="off"
-              defaultChecked
-            />
-            <label className="btn btn-outline-primary" htmlFor="btncheck1">
-              Running
-            </label>
-
-            <input
-              type="checkbox"
-              className="btn-check"
-              id="btncheck2"
-              autoComplete="off"
-              defaultChecked
-            />
-            <label className="btn btn-outline-primary" htmlFor="btncheck2">
-              Pending
-            </label>
-
-            <input
-              type="checkbox"
-              className="btn-check"
-              id="btncheck3"
-              autoComplete="off"
-              defaultChecked
-            />
-            <label className="btn btn-outline-primary" htmlFor="btncheck3">
-              Completed
-            </label>
-            <input
-              type="checkbox"
-              className="btn-check"
-              id="btncheck4"
-              autoComplete="off"
-              defaultChecked
-            />
-            <label className="btn btn-outline-primary" htmlFor="btncheck4">
-              Failed
-            </label>
-          </div>
+        <div className="col-5">
+          <Checkboxes />
         </div>
       </div>
       <hr className="hr" />
