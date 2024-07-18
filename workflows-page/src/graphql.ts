@@ -31,7 +31,7 @@ export interface Task {
 
 export interface Workflow {
   id: number;
-  status: String;
+  status: string;
   tasks: Task[];
 }
 

@@ -4,28 +4,35 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React from "react";
+import { Visit } from "../graphql";
 
-const VisitSelect: React.FC = () => {
-  const [age, setAge] = React.useState("");
+interface VisitSelectProps {
+  visits: Visit[];
+  selectedVisitId: string;
+  handleChange: (event: SelectChangeEvent) => void;
+}
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
-
+const VisitSelect: React.FC<VisitSelectProps> = ({
+  visits,
+  selectedVisitId,
+  handleChange,
+}) => {
   return (
     <Box sx={{ maxWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="visits">Visits</InputLabel>
+        <InputLabel id="visits-label">Visits</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
+          labelId="visits-label"
+          id={selectedVisitId}
+          value={selectedVisitId}
+          label="Visits"
           onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {visits.map((visit) => (
+            <MenuItem key={visit.id} value={visit.id}>
+              {visit.name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
