@@ -6,7 +6,7 @@ import WorkflowCheckboxes from "./components/WorkflowCheckboxes";
 import request from "graphql-request";
 import { GET_VISITS, GetVisitsResponse, Visit } from "./graphql";
 
-const endpoint: string = "http://localhost:4001";
+const endpoint: string = "http://localhost:4000";
 
 const Workflows: React.FC = () => {
   const [visits, setVisits] = useState<Visit[]>([]);

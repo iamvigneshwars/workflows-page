@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Stack,
-  Paper,
   styled,
   IconButton,
   List,
   ListItem,
   ListItemText,
+  Typography,
+  ListSubheader,
+  Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import PendingRoundedIcon from "@mui/icons-material/PendingRounded";
 import ErrorIcon from "@mui/icons-material/Error";
-import Popover from "@mui/material/Popover";
 import { Task, Visit, Workflow } from "../graphql";
 
 const WorkflowPaper = styled(Paper)(({ theme }) => ({
@@ -44,59 +48,61 @@ interface VariantsProps {
   visit: Visit | null;
 }
 
+interface TaskNode extends Task {
+  children?: TaskNode[];
+}
+
+const buildTaskTree = (tasks: Task[]): TaskNode[] => {
+  const taskMap: { [key: string]: TaskNode } = {};
+  const roots: TaskNode[] = [];
+
+  tasks.forEach((task) => {
+    taskMap[task.id] = { ...task, children: [] };
+  });
+
+  tasks.forEach((task) => {
+    if (task.parent_task) {
+      if (taskMap[task.parent_task]) {
+        taskMap[task.parent_task].children!.push(taskMap[task.id]);
+      }
+    } else {
+      roots.push(taskMap[task.id]);
+    }
+  });
+
+  return roots;
+};
+
+const renderTaskTree = (tasks: TaskNode[]) => {
+  return (
+    <List disablePadding>
+      {tasks.map((task) => (
+        <ListItem key={task.id} sx={{ pl: task.parent_task ? 4 : 2 }}>
+          <ListItemText primary={task.name} />
+          {/* <IconButton edge="end">{getStatusIcon(task.status)}</IconButton> */}
+          {task.children && task.children.length > 0 && renderTaskTree(task.children)}
+        </ListItem>
+      ))}
+    </List>
+  );
+};
+
 const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [selectedTasks, selectTasks] = useState<Task[]>([]);
-
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    workflow: Workflow
-  ) => {
-    setAnchorEl(event.currentTarget);
-    selectTasks(workflow.tasks);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "tasks-popover" : undefined;
-
   return (
     <Stack direction="column" spacing={2} sx={{ width: "96%" }}>
-      {visit?.workflows?.map((workflow) => (
-        <WorkflowPaper key={workflow.id} variant="elevation" elevation={6}>
-          <span>Workflow {workflow.id}</span>
-          <IconButton onClick={(event) => handleClick(event, workflow)}>
-            {getStatusIcon(workflow.status)}
-          </IconButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            PaperProps={{
-              style: { maxHeight: "300px", overflow: "auto" },
-            }}
-          >
-            <List>
-              {selectedTasks.map((task) => (
-                <ListItem key={task.name}>
-                  <ListItemText primary={task.name} />
-                  <IconButton edge="end">
-                    {getStatusIcon(task.status)}
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
-          </Popover>
-        </WorkflowPaper>
-      ))}
+      {visit?.workflows?.map((workflow) => {
+        const taskTree = buildTaskTree(workflow.tasks);
+        return (
+          <Accordion key={workflow.id}>
+            <AccordionSummary expandIcon={getStatusIcon(workflow.status)}>
+              <Typography>Workflow {workflow.id}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {renderTaskTree(taskTree)}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </Stack>
   );
 };
