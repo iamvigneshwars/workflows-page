@@ -1,10 +1,54 @@
 import { Container, Grid, Divider, SelectChangeEvent } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import VisitSelect from "./components/VisitSelect";
-import WorkflowList from "./components/WorkflowPaper";
-import WorkflowCheckboxes from "./components/WorkflowCheckboxes";
+import VisitSelect from "./VisitSelect";
+import WorkflowList from "./WorkflowAccordian";
+import WorkflowCheckboxes from "./WorkflowCheckboxes";
 import request from "graphql-request";
-import { GET_VISITS, GetVisitsResponse, Visit } from "./graphql";
+import { gql } from "graphql-request";
+
+export const GET_VISITS = gql`
+  query GetVisits {
+    visits {
+      id
+      name
+      workflows {
+        id
+        status
+        tasks {
+          id
+          parent_task
+          workflow_id
+          name
+          status
+        }
+      }
+    }
+  }
+`;
+
+interface GetVisitsResponse {
+  visits: Visit[];
+}
+
+interface Task {
+  id: number;
+  workflow_id: number;
+  name: string;
+  status: string;
+  parent_task: number;
+}
+
+interface Workflow {
+  id: number;
+  status: string;
+  tasks: Task[];
+}
+
+interface Visit {
+  id: number;
+  name: string;
+  workflows: Workflow[];
+}
 
 const endpoint: string = "http://localhost:4001";
 
@@ -43,7 +87,7 @@ const Workflows: React.FC = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Container sx={{ p: 1, py: 4, backgroundColor: "#f5f5f5" }}>
+    <Container sx={{ p: 1, py: 4 }}>
       <Grid
         container
         spacing={1}

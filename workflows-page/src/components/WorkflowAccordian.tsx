@@ -83,7 +83,7 @@ const renderTaskTree = (tasks: TaskNode[]) => {
 
 const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
   return (
-    <Stack direction="column" spacing={2} sx={{ width: "96%" }}>
+    <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
       {visit?.workflows?.map((workflow) => {
         const taskTree = buildTaskTree(workflow.tasks);
         return (
@@ -98,7 +98,7 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
             >
               <Typography>Workflow {workflow.id}</Typography>
             </AccordionSummary>
-            <AccordionDetails sx={{ backgroundColor: "lightgrey" }}>
+            <AccordionDetails>
               <Box maxWidth="95%">{renderTaskTree(taskTree)}</Box>
             </AccordionDetails>
           </Accordion>
