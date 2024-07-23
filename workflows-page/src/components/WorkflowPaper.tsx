@@ -1,44 +1,31 @@
 import React from "react";
 import {
   Stack,
-  styled,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
-  ListSubheader,
-  Paper,
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Box,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import TaskAltTwoToneIcon from "@mui/icons-material/TaskAltTwoTone";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
-import PendingRoundedIcon from "@mui/icons-material/PendingRounded";
-import ErrorIcon from "@mui/icons-material/Error";
-import { Task, Visit, Workflow } from "../graphql";
+import PendingTwoToneIcon from "@mui/icons-material/PendingTwoTone";
+import ErrorTwoToneIcon from "@mui/icons-material/ErrorTwoTone";
+import { Task, Visit } from "../graphql";
 
-const WorkflowPaper = styled(Paper)(({ theme }) => ({
-  width: "100%",
-  padding: theme.spacing(2),
-  ...theme.typography.body1,
-  textAlign: "right",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-}));
+import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
+import { TreeItem } from "@mui/x-tree-view/TreeItem";
 
-const getStatusIcon = (status: string) => {
+const getStatusIcon = (status: string, size: number = 25) => {
   switch (status) {
     case "completed":
-      return <CheckCircleIcon color="success" />;
+      return <TaskAltTwoToneIcon color="success" sx={{ fontSize: size }} />;
     case "running":
-      return <HourglassBottomIcon color="info" />;
+      return <HourglassBottomIcon color="info" sx={{ fontSize: size }} />;
     case "pending":
-      return <PendingRoundedIcon color="warning" />;
+      return <PendingTwoToneIcon color="warning" sx={{ fontSize: size }} />;
     case "failed":
-      return <ErrorIcon color="error" />;
+      return <ErrorTwoToneIcon color="error" sx={{ fontSize: size }} />;
     default:
       return null;
   }
@@ -75,15 +62,23 @@ const buildTaskTree = (tasks: Task[]): TaskNode[] => {
 
 const renderTaskTree = (tasks: TaskNode[]) => {
   return (
-    <List disablePadding>
+    <SimpleTreeView disableSelection>
       {tasks.map((task) => (
-        <ListItem key={task.id} sx={{ pl: task.parent_task ? 4 : 2 }}>
-          <ListItemText primary={task.name} />
-          {/* <IconButton edge="end">{getStatusIcon(task.status)}</IconButton> */}
-          {task.children && task.children.length > 0 && renderTaskTree(task.children)}
-        </ListItem>
+        <TreeItem
+          itemId={task.name}
+          label={
+            <Box display="flex" justifyContent="space-between">
+              <Typography sx={{ marginLeft: 1 }}>{task.name}</Typography>
+              {getStatusIcon(task.status, 20)}
+            </Box>
+          }
+        >
+          {task.children &&
+            task.children.length > 0 &&
+            renderTaskTree(task.children)}
+        </TreeItem>
       ))}
-    </List>
+    </SimpleTreeView>
   );
 };
 
@@ -94,11 +89,18 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
         const taskTree = buildTaskTree(workflow.tasks);
         return (
           <Accordion key={workflow.id}>
-            <AccordionSummary expandIcon={getStatusIcon(workflow.status)}>
+            <AccordionSummary
+              expandIcon={getStatusIcon(workflow.status)}
+              sx={{
+                "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                  transform: "none",
+                },
+              }}
+            >
               <Typography>Workflow {workflow.id}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {renderTaskTree(taskTree)}
+              <Box maxWidth="95%">{renderTaskTree(taskTree)}</Box>
             </AccordionDetails>
           </Accordion>
         );
