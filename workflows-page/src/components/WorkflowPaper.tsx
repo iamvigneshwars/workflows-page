@@ -8,10 +8,10 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
-import PendingRoundedIcon from "@mui/icons-material/PendingRounded";
-import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
+import PendingTwoToneIcon from "@mui/icons-material/PendingTwoTone";
+import CircularProgress from "@mui/material/CircularProgress";
+import ErrorTwoToneIcon from "@mui/icons-material/ErrorTwoTone";
 import Popover from "@mui/material/Popover";
 import { Task, Visit, Workflow } from "../graphql";
 
@@ -28,13 +28,13 @@ const WorkflowPaper = styled(Paper)(({ theme }) => ({
 const getStatusIcon = (status: string) => {
   switch (status) {
     case "completed":
-      return <CheckCircleIcon color="success" />;
+      return <CheckCircleTwoToneIcon color="success" />;
     case "running":
-      return <HourglassBottomIcon color="info" />;
+      return <CircularProgress color="info" size={18} />;
     case "pending":
-      return <PendingRoundedIcon color="warning" />;
+      return <PendingTwoToneIcon color="warning" />;
     case "failed":
-      return <ErrorIcon color="error" />;
+      return <ErrorTwoToneIcon color="error" />;
     default:
       return null;
   }
