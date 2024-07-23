@@ -8,4 +8,5 @@ services:
     volumes:
       - ..:/workspace:cached,z
     command: sleep infinity
-
+    environment:
+      - CHOKIDAR_USEPOLLING=true

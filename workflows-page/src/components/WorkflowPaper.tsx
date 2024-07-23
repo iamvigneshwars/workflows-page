@@ -1,40 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Stack,
-  Paper,
-  styled,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
 } from "@mui/material";
-import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
+import TaskAltTwoToneIcon from "@mui/icons-material/TaskAltTwoTone";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import PendingTwoToneIcon from "@mui/icons-material/PendingTwoTone";
-import CircularProgress from "@mui/material/CircularProgress";
 import ErrorTwoToneIcon from "@mui/icons-material/ErrorTwoTone";
-import Popover from "@mui/material/Popover";
-import { Task, Visit, Workflow } from "../graphql";
+import { Task, Visit } from "../graphql";
+import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
+import { TreeItem } from "@mui/x-tree-view/TreeItem";
 
-const WorkflowPaper = styled(Paper)(({ theme }) => ({
-  width: "100%",
-  padding: theme.spacing(2),
-  ...theme.typography.body1,
-  textAlign: "right",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-}));
-
-const getStatusIcon = (status: string) => {
+const getStatusIcon = (status: string, size: number = 25) => {
   switch (status) {
     case "completed":
-      return <CheckCircleTwoToneIcon color="success" />;
+      return <TaskAltTwoToneIcon color="success" sx={{ fontSize: size }} />;
     case "running":
-      return <CircularProgress color="info" size={18} />;
+      return <HourglassBottomIcon color="info" sx={{ fontSize: size }} />;
     case "pending":
-      return <PendingTwoToneIcon color="warning" />;
+      return <PendingTwoToneIcon color="warning" sx={{ fontSize: size }} />;
     case "failed":
-      return <ErrorTwoToneIcon color="error" />;
+      return <ErrorTwoToneIcon color="error" sx={{ fontSize: size }} />;
     default:
       return null;
   }
@@ -44,59 +34,76 @@ interface VariantsProps {
   visit: Visit | null;
 }
 
+interface TaskNode extends Task {
+  children?: TaskNode[];
+}
+
+const buildTaskTree = (tasks: Task[]): TaskNode[] => {
+  const taskMap: { [key: string]: TaskNode } = {};
+  const roots: TaskNode[] = [];
+
+  tasks.forEach((task) => {
+    taskMap[task.id] = { ...task, children: [] };
+  });
+
+  tasks.forEach((task) => {
+    if (task.parent_task) {
+      if (taskMap[task.parent_task]) {
+        taskMap[task.parent_task].children!.push(taskMap[task.id]);
+      }
+    } else {
+      roots.push(taskMap[task.id]);
+    }
+  });
+
+  return roots;
+};
+
+const renderTaskTree = (tasks: TaskNode[]) => {
+  return (
+    <SimpleTreeView disableSelection>
+      {tasks.map((task) => (
+        <TreeItem
+          itemId={task.name}
+          label={
+            <Box display="flex" justifyContent="space-between">
+              <Typography sx={{ marginLeft: 1 }}>{task.name}</Typography>
+              {getStatusIcon(task.status, 20)}
+            </Box>
+          }
+        >
+          {task.children &&
+            task.children.length > 0 &&
+            renderTaskTree(task.children)}
+        </TreeItem>
+      ))}
+    </SimpleTreeView>
+  );
+};
+
 const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [selectedTasks, selectTasks] = useState<Task[]>([]);
-
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    workflow: Workflow
-  ) => {
-    setAnchorEl(event.currentTarget);
-    selectTasks(workflow.tasks);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "tasks-popover" : undefined;
-
   return (
     <Stack direction="column" spacing={2} sx={{ width: "96%" }}>
-      {visit?.workflows?.map((workflow) => (
-        <WorkflowPaper key={workflow.id} variant="elevation" elevation={6}>
-          <span>Workflow {workflow.id}</span>
-          <IconButton onClick={(event) => handleClick(event, workflow)}>
-            {getStatusIcon(workflow.status)}
-          </IconButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            PaperProps={{
-              style: { maxHeight: "300px", overflow: "auto" },
-            }}
-          >
-            <List>
-              {selectedTasks.map((task) => (
-                <ListItem key={task.name}>
-                  <ListItemText primary={task.name} />
-                  <IconButton edge="end">
-                    {getStatusIcon(task.status)}
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
-          </Popover>
-        </WorkflowPaper>
-      ))}
+      {visit?.workflows?.map((workflow) => {
+        const taskTree = buildTaskTree(workflow.tasks);
+        return (
+          <Accordion key={workflow.id}>
+            <AccordionSummary
+              expandIcon={getStatusIcon(workflow.status)}
+              sx={{
+                "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                  transform: "none",
+                },
+              }}
+            >
+              <Typography>Workflow {workflow.id}</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ backgroundColor: "lightgrey" }}>
+              <Box maxWidth="95%">{renderTaskTree(taskTree)}</Box>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </Stack>
   );
 };

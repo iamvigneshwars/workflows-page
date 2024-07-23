@@ -9,6 +9,8 @@ export const GET_VISITS = gql`
         id
         status
         tasks {
+          id
+          parent_task
           workflow_id
           name
           status
@@ -24,9 +26,11 @@ export interface GetVisitsResponse {
 }
 
 export interface Task {
+  id: number;
   workflow_id: number;
   name: string;
   status: string;
+  parent_task: number;
 }
 
 export interface Workflow {
