@@ -99,7 +99,7 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
             >
               <Typography>Workflow {workflow.id}</Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ backgroundColor: "lightgrey" }}>
               <Box maxWidth="95%">{renderTaskTree(taskTree)}</Box>
             </AccordionDetails>
           </Accordion>
