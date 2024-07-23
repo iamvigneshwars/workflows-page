@@ -12,7 +12,6 @@ import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import PendingTwoToneIcon from "@mui/icons-material/PendingTwoTone";
 import ErrorTwoToneIcon from "@mui/icons-material/ErrorTwoTone";
 import { Task, Visit } from "../graphql";
-
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 
