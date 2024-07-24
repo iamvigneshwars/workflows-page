@@ -4,16 +4,17 @@ import {
   Typography,
   Accordion,
   AccordionSummary,
-  AccordionDetails,
   Box,
+  styled,
 } from "@mui/material";
 import TaskAltTwoToneIcon from "@mui/icons-material/TaskAltTwoTone";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import PendingTwoToneIcon from "@mui/icons-material/PendingTwoTone";
 import ErrorTwoToneIcon from "@mui/icons-material/ErrorTwoTone";
-import { Task, Visit } from "../graphql";
+import { Task, Visit } from "./Workflows";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
 
 const getStatusIcon = (status: string, size: number = 25) => {
   switch (status) {
@@ -80,6 +81,11 @@ const renderTaskTree = (tasks: TaskNode[]) => {
     </SimpleTreeView>
   );
 };
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
+}));
 
 const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
   return (

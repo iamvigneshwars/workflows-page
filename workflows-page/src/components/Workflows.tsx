@@ -30,7 +30,7 @@ interface GetVisitsResponse {
   visits: Visit[];
 }
 
-interface Task {
+export interface Task {
   id: number;
   workflow_id: number;
   name: string;
@@ -38,13 +38,13 @@ interface Task {
   parent_task: number;
 }
 
-interface Workflow {
+export interface Workflow {
   id: number;
   status: string;
   tasks: Task[];
 }
 
-interface Visit {
+export interface Visit {
   id: number;
   name: string;
   workflows: Workflow[];
