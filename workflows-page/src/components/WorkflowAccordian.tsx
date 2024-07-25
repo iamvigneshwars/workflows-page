@@ -106,8 +106,8 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
               <Typography>Workflow {workflow.id}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Box maxWidth="95%">{renderTaskTree(taskTree)}</Box>
-              <Box>
+              <Box maxWidth="95%">
+                {/* {renderTaskTree(taskTree)} */}
                 <DAGGraph />
               </Box>
             </AccordionDetails>

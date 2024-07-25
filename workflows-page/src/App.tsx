@@ -21,8 +21,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* <Workflows /> */}
-      <DAGGraph />
+      <Workflows />
+      {/* <DAGGraph /> */}
     </ThemeProvider>
   );
 }

@@ -11,7 +11,7 @@ export function applyDagreLayout(
   g.setDefaultEdgeLabel(() => ({}));
 
   nodes.forEach((node) => {
-    g.setNode(node.id, { width: 150, height: 40 });
+    g.setNode(node.id, { width: 150, height: 100 });
   });
 
   edges.forEach((edge) => {
