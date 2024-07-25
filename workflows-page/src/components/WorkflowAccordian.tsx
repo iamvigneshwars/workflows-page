@@ -15,6 +15,7 @@ import { Task, Visit } from "./Workflows";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import DAGGraph from "./Dag";
 
 const getStatusIcon = (status: string, size: number = 25) => {
   switch (status) {
@@ -106,6 +107,9 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Box maxWidth="95%">{renderTaskTree(taskTree)}</Box>
+              <Box>
+                <DAGGraph />
+              </Box>
             </AccordionDetails>
           </Accordion>
         );
