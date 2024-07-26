@@ -50,7 +50,7 @@ export interface Visit {
   workflows: Workflow[];
 }
 
-const endpoint: string = "http://localhost:4001";
+const endpoint: string = "http://localhost:4000";
 
 const Workflows: React.FC = () => {
   const [visits, setVisits] = useState<Visit[]>([]);

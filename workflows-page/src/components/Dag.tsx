@@ -65,6 +65,9 @@ const DAGGraph: React.FC = () => {
           nodes={nodes}
           edges={edges}
           onInit={onInit}
+          nodesDraggable={false}
+          nodesConnectable={false}
+          elementsSelectable={false}
           style={{ width: "100%", height: "100%" }}
         >
           <Controls />
