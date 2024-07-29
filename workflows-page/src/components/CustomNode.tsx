@@ -12,7 +12,7 @@ interface CustomNodeProps {
 
 const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
   return (
-    <Box style={{ padding: 10, border: "1px solid #ddd", borderRadius: 8 }}>
+    <Box style={{ padding: 8, border: "1px solid #ddd", borderRadius: 8 }}>
       <Handle
         type="target"
         position={Position.Left}

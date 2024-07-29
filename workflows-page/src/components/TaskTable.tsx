@@ -19,9 +19,8 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
           padding={2}
           border={1}
           borderColor="grey.300"
-          borderRadius={1}
+          borderRadius={4}
           sx={{
-            backgroundColor: "background.paper",
             textAlign: "center",
             minWidth: "150px",
             flex: "1 1 auto",
