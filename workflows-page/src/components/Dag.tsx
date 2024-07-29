@@ -1,14 +1,15 @@
-import React, { useMemo, useEffect, useCallback, useRef } from "react";
-import { Box } from "@mui/material";
+import React, { useMemo, useEffect, useCallback, useRef, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import ReactFlow, {
   Background,
   ReactFlowProvider,
   Node,
   Edge,
   ReactFlowInstance,
+  getRectOfNodes,
 } from "react-flow-renderer";
 import { applyDagreLayout } from "./layout";
-import CustomNode from "./CustomNode"; 
+import CustomNode from "./CustomNode";
 
 const initialNodes: Node[] = [
   {
@@ -53,6 +54,8 @@ const DAGGraph: React.FC = () => {
   );
 
   const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isOverflow, setIsOverflow] = useState(false);
 
   const onInit = useCallback((instance: ReactFlowInstance) => {
     reactFlowInstance.current = instance;
@@ -65,25 +68,54 @@ const DAGGraph: React.FC = () => {
     }
   }, [nodes, edges]);
 
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (containerRef.current) {
+        const { width, height } = containerRef.current.getBoundingClientRect();
+        const boundingBox = getRectOfNodes(nodes);
+        
+        if (boundingBox.width > width || boundingBox.height > height) {
+          setIsOverflow(true);
+        } else {
+          setIsOverflow(false);
+        }
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener("window-resize", checkOverflow);
+    return () => {
+      window.removeEventListener("window-resize", checkOverflow);
+    };
+  }, [nodes, edges]);
+
   return (
     <Box display="flex" height="30vh" width="100%">
       <ReactFlowProvider>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          nodeTypes={nodeTypes}
-          onInit={onInit}
-          nodesDraggable={false}
-          nodesConnectable={false}
-          elementsSelectable={false}
-          zoomOnScroll={false}
-          zoomOnPinch={false}
-          panOnDrag={false}
-          zoomOnDoubleClick={false}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <Background color="grey" />
-        </ReactFlow>
+        <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
+          {isOverflow ? (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+              <Typography variant="h6">Too many nodes to display</Typography>
+            </Box>
+          ) : (
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              nodeTypes={nodeTypes}
+              onInit={onInit}
+              nodesDraggable={false}
+              nodesConnectable={false}
+              elementsSelectable={false}
+              zoomOnScroll={false}
+              zoomOnPinch={false}
+              panOnDrag={false}
+              zoomOnDoubleClick={false}
+              style={{ width: "100%", height: "100%" }}
+            >
+              <Background color="grey" />
+            </ReactFlow>
+          )}
+        </div>
       </ReactFlowProvider>
     </Box>
   );
