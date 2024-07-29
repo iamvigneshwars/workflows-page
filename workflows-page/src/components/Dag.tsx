@@ -10,7 +10,8 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import { applyDagreLayout } from "./layout";
 import CustomNode from "./CustomNode";
-import VisitSelect from "./VisitSelect";
+import { Task } from "./Workflows";
+import TaskTable from "./TaskTable";
 
 const initialNodes: Node[] = [
   {
@@ -48,7 +49,11 @@ const nodeTypes = {
   custom: CustomNode,
 };
 
-const DAGGraph: React.FC = () => {
+interface DAGGraphProps {
+  tasks: Task[];
+}
+
+const DAGGraph: React.FC<DAGGraphProps> = ({tasks}) => {
   const { nodes, edges } = useMemo(
     () => applyDagreLayout(initialNodes, initialEdges),
     []
@@ -102,8 +107,8 @@ const DAGGraph: React.FC = () => {
         <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
           {isOverflow ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-              <Typography variant="h6">Too many nodes to display</Typography>
-
+              {/* <TaskTable tasks={{tasks}} /> */}
+              <TaskTable tasks={tasks}/>
             </Box>
           ) : (
             <ReactFlow

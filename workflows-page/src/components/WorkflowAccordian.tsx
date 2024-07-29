@@ -92,7 +92,6 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
   return (
     <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
       {visit?.workflows?.map((workflow) => {
-        const taskTree = buildTaskTree(workflow.tasks);
         return (
           <Accordion key={workflow.id}>
             <AccordionSummary
@@ -107,8 +106,7 @@ const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Box maxWidth="95%">
-                {/* {renderTaskTree(taskTree)} */}
-                <DAGGraph />
+                <DAGGraph tasks={workflow.tasks} />
               </Box>
             </AccordionDetails>
           </Accordion>
