@@ -1,6 +1,7 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { Task } from './Workflows';
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import { Task } from "./Workflows";
+import { getStatusIcon } from "../utils/helper";
 
 interface TaskTableProps {
   tasks: Task[];
@@ -14,24 +15,23 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
       gap={2}
       padding={2}
     >
-      {tasks.map(task => (
+      {tasks.map((task) => (
         <Box
           key={task.id}
           display="flex"
-          justifyContent="center"
+          justifyContent="space-around"
           alignItems="center"
           padding={2}
           border={1}
           borderColor="grey.300"
           borderRadius={1}
           sx={{
-            backgroundColor: 'background.paper',
-            textAlign: 'center',
+            backgroundColor: "background.paper",
+            textAlign: "center",
           }}
         >
-          <Typography variant="body1">
-            {task.name}
-          </Typography>
+          <Typography variant="body1">{task.name}</Typography>
+          {getStatusIcon(task.status, 20)}
         </Box>
       ))}
     </Box>
@@ -39,4 +39,3 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
 };
 
 export default TaskTable;
-

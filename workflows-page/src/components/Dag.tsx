@@ -1,5 +1,11 @@
-import React, { useMemo, useEffect, useCallback, useRef, useState } from "react";
-import { Box, SelectChangeEvent, Typography } from "@mui/material";
+import React, {
+  useMemo,
+  useEffect,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
+import { Box } from "@mui/material";
 import ReactFlow, {
   Background,
   ReactFlowProvider,
@@ -8,7 +14,7 @@ import ReactFlow, {
   ReactFlowInstance,
   getRectOfNodes,
 } from "react-flow-renderer";
-import { applyDagreLayout } from "./layout";
+import { applyDagreLayout } from "../utils/layout";
 import CustomNode from "./CustomNode";
 import { Task } from "./Workflows";
 import TaskTable from "./TaskTable";
@@ -32,9 +38,24 @@ const initialNodes: Node[] = [
     data: { label: "Task 3" },
     position: { x: 0, y: 0 },
   },
-  { id: "4", type: "custom", data: { label: "Task 4" }, position: { x: 0, y: 0 } },
-  { id: "5", type: "custom", data: { label: "Task 5" }, position: { x: 0, y: 0 } },
-  { id: "6", type: "custom", data: { label: "Task 6" }, position: { x: 0, y: 0 } },
+  {
+    id: "4",
+    type: "custom",
+    data: { label: "Task 4" },
+    position: { x: 0, y: 0 },
+  },
+  {
+    id: "5",
+    type: "custom",
+    data: { label: "Task 5" },
+    position: { x: 0, y: 0 },
+  },
+  {
+    id: "6",
+    type: "custom",
+    data: { label: "Task 6" },
+    position: { x: 0, y: 0 },
+  },
 ];
 
 const initialEdges: Edge[] = [
@@ -53,7 +74,7 @@ interface DAGGraphProps {
   tasks: Task[];
 }
 
-const DAGGraph: React.FC<DAGGraphProps> = ({tasks}) => {
+const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
   const { nodes, edges } = useMemo(
     () => applyDagreLayout(initialNodes, initialEdges),
     []
@@ -106,9 +127,14 @@ const DAGGraph: React.FC<DAGGraphProps> = ({tasks}) => {
       <ReactFlowProvider>
         <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
           {isOverflow ? (
-            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+            >
               {/* <TaskTable tasks={{tasks}} /> */}
-              <TaskTable tasks={tasks}/>
+              <TaskTable tasks={tasks} />
             </Box>
           ) : (
             <ReactFlow
