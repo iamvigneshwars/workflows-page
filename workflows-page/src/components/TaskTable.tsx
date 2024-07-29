@@ -9,12 +9,7 @@ interface TaskTableProps {
 
 const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns="repeat(auto-fill, minmax(150px, 1fr))"
-      gap={2}
-      padding={2}
-    >
+    <Box display="flex" flexWrap="wrap" gap={2} padding={2} overflow="auto">
       {tasks.map((task) => (
         <Box
           key={task.id}
@@ -28,6 +23,8 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
           sx={{
             backgroundColor: "background.paper",
             textAlign: "center",
+            minWidth: "150px",
+            flex: "1 1 auto",
           }}
         >
           <Typography variant="body1">{task.name}</Typography>

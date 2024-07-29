@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { Box } from "@mui/material";
 import ReactFlow, {
-  Background,
   ReactFlowProvider,
   Node,
   Edge,
@@ -19,55 +18,63 @@ import CustomNode from "./CustomNode";
 import { Task } from "./Workflows";
 import TaskTable from "./TaskTable";
 
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    type: "custom",
-    data: { label: "Task 1" },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "2",
-    type: "custom",
-    data: { label: "Task 2" },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "3",
-    type: "custom",
-    data: { label: "Task 3" },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "4",
-    type: "custom",
-    data: { label: "Task 4" },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "5",
-    type: "custom",
-    data: { label: "Task 5" },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "6",
-    type: "custom",
-    data: { label: "Task 6" },
-    position: { x: 0, y: 0 },
-  },
-];
+interface TaskNode extends Task {
+  children?: TaskNode[];
+}
 
-const initialEdges: Edge[] = [
-  { id: "e1-2", source: "1", target: "2", type: "smoothstep" },
-  { id: "e2-3", source: "2", target: "3", type: "smoothstep" },
-  { id: "e2-4", source: "2", target: "4", type: "smoothstep" },
-  { id: "e2-5", source: "3", target: "5", type: "smoothstep" },
-  { id: "e2-6", source: "4", target: "6", type: "smoothstep" },
-];
+const buildTaskTree = (tasks: Task[]): TaskNode[] => {
+  const taskMap: { [key: string]: TaskNode } = {};
+  const roots: TaskNode[] = [];
 
-const nodeTypes = {
-  custom: CustomNode,
+  tasks.forEach((task) => {
+    taskMap[task.id] = { ...task, children: [] };
+  });
+
+  tasks.forEach((task) => {
+    if (task.parent_task) {
+      if (taskMap[task.parent_task]) {
+        taskMap[task.parent_task].children!.push(taskMap[task.id]);
+      }
+    } else {
+      roots.push(taskMap[task.id]);
+    }
+  });
+
+  return roots;
+};
+
+const generateNodesAndEdges = (
+  taskNodes: TaskNode[]
+): { nodes: Node[]; edges: Edge[] } => {
+  const nodes: Node[] = [];
+  const edges: Edge[] = [];
+
+  const traverse = (tasks: TaskNode[], parentId?: string) => {
+    tasks.forEach((task) => {
+      nodes.push({
+        id: task.id.toString(),
+        type: "custom",
+        data: { label: task.name, status: task.status },
+        position: { x: 0, y: 0 },
+      });
+
+      if (parentId) {
+        edges.push({
+          id: `e${parentId}-${task.id.toString()}`,
+          source: parentId,
+          target: task.id.toString(),
+          type: "smoothstep",
+        });
+      }
+
+      if (task.children && task.children.length > 0) {
+        traverse(task.children, task.id.toString());
+      }
+    });
+  };
+
+  traverse(taskNodes);
+  return { nodes, edges };
 };
 
 interface DAGGraphProps {
@@ -75,9 +82,15 @@ interface DAGGraphProps {
 }
 
 const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
+  const taskTree = useMemo(() => buildTaskTree(tasks), [tasks]);
   const { nodes, edges } = useMemo(
-    () => applyDagreLayout(initialNodes, initialEdges),
-    []
+    () => generateNodesAndEdges(taskTree),
+    [taskTree]
+  );
+
+  const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(
+    () => applyDagreLayout(nodes, edges),
+    [nodes, edges]
   );
 
   const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
@@ -99,7 +112,7 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
     const checkOverflow = () => {
       if (containerRef.current) {
         const { width, height } = containerRef.current.getBoundingClientRect();
-        const boundingBox = getRectOfNodes(nodes);
+        const boundingBox = getRectOfNodes(layoutedNodes);
 
         if (boundingBox.width > width || boundingBox.height > height) {
           setIsOverflow(true);
@@ -120,7 +133,7 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
     return () => {
       window.removeEventListener("resize", handleResizeAndOverflow);
     };
-  }, [nodes, edges]);
+  }, [layoutedNodes, layoutedEdges]);
 
   return (
     <Box display="flex" height="30vh" width="100%">
@@ -133,14 +146,13 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
               alignItems="center"
               height="100%"
             >
-              {/* <TaskTable tasks={{tasks}} /> */}
               <TaskTable tasks={tasks} />
             </Box>
           ) : (
             <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              nodeTypes={nodeTypes}
+              nodes={layoutedNodes}
+              edges={layoutedEdges}
+              nodeTypes={{ custom: CustomNode }}
               onInit={onInit}
               nodesDraggable={false}
               nodesConnectable={false}
@@ -150,9 +162,7 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
               panOnDrag={false}
               zoomOnDoubleClick={false}
               style={{ width: "100%", height: "100%" }}
-            >
-              <Background color="grey" />
-            </ReactFlow>
+            ></ReactFlow>
           )}
         </div>
       </ReactFlowProvider>
