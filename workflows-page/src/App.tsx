@@ -3,7 +3,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Workflows from "./components/Workflows";
-import DAGGraph from "./components/Dag";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -22,7 +21,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Workflows />
-      {/* <DAGGraph /> */}
     </ThemeProvider>
   );
 }

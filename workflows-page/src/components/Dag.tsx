@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useCallback, useRef, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import ReactFlow, {
   Background,
   ReactFlowProvider,
@@ -10,6 +10,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import { applyDagreLayout } from "./layout";
 import CustomNode from "./CustomNode";
+import VisitSelect from "./VisitSelect";
 
 const initialNodes: Node[] = [
   {
@@ -63,17 +64,17 @@ const DAGGraph: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (reactFlowInstance.current) {
-      reactFlowInstance.current.fitView();
-    }
-  }, [nodes, edges]);
+    const fitWindowResize = () => {
+      if (reactFlowInstance.current) {
+        reactFlowInstance.current.fitView();
+      }
+    };
 
-  useEffect(() => {
     const checkOverflow = () => {
       if (containerRef.current) {
         const { width, height } = containerRef.current.getBoundingClientRect();
         const boundingBox = getRectOfNodes(nodes);
-        
+
         if (boundingBox.width > width || boundingBox.height > height) {
           setIsOverflow(true);
         } else {
@@ -82,10 +83,16 @@ const DAGGraph: React.FC = () => {
       }
     };
 
-    checkOverflow();
-    window.addEventListener("window-resize", checkOverflow);
+    const handleResizeAndOverflow = () => {
+      fitWindowResize();
+      checkOverflow();
+    };
+
+    handleResizeAndOverflow();
+    window.addEventListener("resize", handleResizeAndOverflow);
+
     return () => {
-      window.removeEventListener("window-resize", checkOverflow);
+      window.removeEventListener("resize", handleResizeAndOverflow);
     };
   }, [nodes, edges]);
 
@@ -96,6 +103,7 @@ const DAGGraph: React.FC = () => {
           {isOverflow ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
               <Typography variant="h6">Too many nodes to display</Typography>
+
             </Box>
           ) : (
             <ReactFlow
