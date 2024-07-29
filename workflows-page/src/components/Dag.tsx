@@ -1,7 +1,6 @@
 import React, { useMemo, useEffect, useCallback, useRef } from "react";
 import { Box } from "@mui/material";
 import ReactFlow, {
-  Controls,
   Background,
   ReactFlowProvider,
   Node,
@@ -9,26 +8,30 @@ import ReactFlow, {
   ReactFlowInstance,
 } from "react-flow-renderer";
 import { applyDagreLayout } from "./layout";
+import CustomNode from "./CustomNode"; 
 
 const initialNodes: Node[] = [
   {
     id: "1",
+    type: "custom",
     data: { label: "Task 1" },
     position: { x: 0, y: 0 },
   },
   {
     id: "2",
+    type: "custom",
     data: { label: "Task 2" },
     position: { x: 0, y: 0 },
   },
   {
     id: "3",
+    type: "custom",
     data: { label: "Task 3" },
     position: { x: 0, y: 0 },
   },
-  { id: "4", data: { label: "Task 4" }, position: { x: 0, y: 0 } },
-  { id: "5", data: { label: "Task 5" }, position: { x: 0, y: 0 } },
-  { id: "6", data: { label: "Task 6" }, position: { x: 0, y: 0 } },
+  { id: "4", type: "custom", data: { label: "Task 4" }, position: { x: 0, y: 0 } },
+  { id: "5", type: "custom", data: { label: "Task 5" }, position: { x: 0, y: 0 } },
+  { id: "6", type: "custom", data: { label: "Task 6" }, position: { x: 0, y: 0 } },
 ];
 
 const initialEdges: Edge[] = [
@@ -38,6 +41,10 @@ const initialEdges: Edge[] = [
   { id: "e2-5", source: "3", target: "5", type: "smoothstep" },
   { id: "e2-6", source: "4", target: "6", type: "smoothstep" },
 ];
+
+const nodeTypes = {
+  custom: CustomNode,
+};
 
 const DAGGraph: React.FC = () => {
   const { nodes, edges } = useMemo(
@@ -64,13 +71,17 @@ const DAGGraph: React.FC = () => {
         <ReactFlow
           nodes={nodes}
           edges={edges}
+          nodeTypes={nodeTypes}
           onInit={onInit}
           nodesDraggable={false}
           nodesConnectable={false}
           elementsSelectable={false}
+          zoomOnScroll={false}
+          zoomOnPinch={false}
+          panOnDrag={false}
+          zoomOnDoubleClick={false}
           style={{ width: "100%", height: "100%" }}
         >
-          <Controls />
           <Background color="grey" />
         </ReactFlow>
       </ReactFlowProvider>
