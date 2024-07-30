@@ -162,6 +162,7 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
               panOnDrag={false}
               zoomOnDoubleClick={false}
               style={{ width: "100%", height: "100%" }}
+              preventScrolling={false}
             ></ReactFlow>
           )}
         </div>
