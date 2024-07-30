@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Visit } from "./Workflows";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import DAGGraph from "./Dag";
+import DAGGraph from "./TasksDAG";
 import { getStatusIcon } from "../utils/helper";
 
 interface VariantsProps {

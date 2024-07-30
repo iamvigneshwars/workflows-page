@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Handle, Position } from "react-flow-renderer";
 import { getStatusIcon } from "../utils/helper";
@@ -19,7 +19,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
         style={{ background: "#555" }}
       />
       <Box display={"flex"} alignContent={"space-between"}>
-        {data.label}
+        <Typography variant="body1">{data.label}</Typography>
         {getStatusIcon(data.status)}
       </Box>
       <Handle

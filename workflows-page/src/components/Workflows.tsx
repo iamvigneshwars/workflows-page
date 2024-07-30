@@ -1,17 +1,35 @@
-import { Container, Grid, Divider, SelectChangeEvent } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Divider,
+  SelectChangeEvent,
+  Box,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import VisitSelect from "./VisitSelect";
 import WorkflowList from "./WorkflowAccordian";
-import WorkflowCheckboxes from "./WorkflowCheckboxes";
 import request from "graphql-request";
 import { gql } from "graphql-request";
 
 export const GET_VISITS = gql`
-  query GetVisits {
+  query GetVisits(
+    $completed: Boolean
+    $running: Boolean
+    $pending: Boolean
+    $failed: Boolean
+  ) {
     visits {
       id
       name
-      workflows {
+      workflows(
+        completed: $completed
+        running: $running
+        pending: $pending
+        failed: $failed
+      ) {
         id
         status
         tasks {
@@ -58,22 +76,38 @@ const Workflows: React.FC = () => {
   const [selectedVisitId, setSelectedVisitId] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [completed, setCompleted] = useState<boolean>(true);
+  const [running, setRunning] = useState<boolean>(true);
+  const [pending, setPending] = useState<boolean>(true);
+  const [failed, setFailed] = useState<boolean>(true);
+
+  const fetchData = async (filters = {}) => {
+    setLoading(true);
+    try {
+      const data = await request<GetVisitsResponse>(
+        endpoint,
+        GET_VISITS,
+        filters
+      );
+      setVisits(data.visits);
+      if (selectedVisitId) {
+        const visit =
+          data.visits.find((visit) => visit.id === parseInt(selectedVisitId)) ||
+          null;
+        setSelectedVisit(visit);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await request<GetVisitsResponse>(endpoint, GET_VISITS);
-        setVisits(data.visits);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+    fetchData({ completed, running, pending, failed });
+  }, [completed, running, pending, failed]);
 
   const handleChange = (event: SelectChangeEvent) => {
     const selectedVisitId: string = event.target.value as string;
@@ -81,6 +115,26 @@ const Workflows: React.FC = () => {
       visits.find((visit) => visit.id === parseInt(event.target.value)) || null;
     setSelectedVisitId(selectedVisitId);
     setSelectedVisit(visit);
+  };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    switch (name) {
+      case "completed":
+        setCompleted(checked);
+        break;
+      case "running":
+        setRunning(checked);
+        break;
+      case "pending":
+        setPending(checked);
+        break;
+      case "failed":
+        setFailed(checked);
+        break;
+      default:
+        break;
+    }
   };
 
   if (loading) return <p>loading...</p>;
@@ -109,7 +163,50 @@ const Workflows: React.FC = () => {
           md={8}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <WorkflowCheckboxes />
+          <Box display="flex" justifyContent="space-between">
+            <FormGroup row>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={completed}
+                    onChange={handleCheckboxChange}
+                    name="completed"
+                  />
+                }
+                label="Completed"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={running}
+                    onChange={handleCheckboxChange}
+                    name="running"
+                  />
+                }
+                label="Running"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={pending}
+                    onChange={handleCheckboxChange}
+                    name="pending"
+                  />
+                }
+                label="Pending"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={failed}
+                    onChange={handleCheckboxChange}
+                    name="failed"
+                  />
+                }
+                label="Failed"
+              />
+            </FormGroup>
+          </Box>
         </Grid>
       </Grid>
       <Divider variant="middle" />
