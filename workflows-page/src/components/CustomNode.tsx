@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Handle, Position } from "react-flow-renderer";
 import { getStatusIcon } from "../utils/helper";
-
+import { truncateLabel } from "../utils/helper";
 interface CustomNodeProps {
   data: {
     label: string;
@@ -11,6 +11,7 @@ interface CustomNodeProps {
 }
 
 const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
+  const truncatedLabel = truncateLabel(data.label);
   return (
     <Box style={{ padding: 8, border: "1px solid #ddd", borderRadius: 8 }}>
       <Handle
@@ -18,8 +19,14 @@ const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
         position={Position.Left}
         style={{ background: "#555" }}
       />
-      <Box display={"flex"} alignContent={"space-between"}>
-        <Typography variant="body1">{data.label}</Typography>
+      <Box
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+        padding={0.5}
+        minWidth={110}
+      >
+        <Typography variant="body1">{truncatedLabel}</Typography>
         {getStatusIcon(data.status)}
       </Box>
       <Handle

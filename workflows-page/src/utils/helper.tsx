@@ -17,3 +17,11 @@ export const getStatusIcon = (status: string, size: number = 25) => {
       return null;
   }
 };
+
+export const truncateLabel = (text: string) => {
+  const maxLength = 16;
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return `${text.slice(0, 3)}...${text.slice(-3)}`;
+};

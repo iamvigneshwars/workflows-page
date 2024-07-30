@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Task } from "./Workflows";
 import { getStatusIcon } from "../utils/helper";
+import { truncateLabel } from "../utils/helper";
 
 interface TaskTableProps {
   tasks: Task[];
@@ -26,7 +27,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
             flex: "1 1 auto",
           }}
         >
-          <Typography variant="body1">{task.name}</Typography>
+          <Typography variant="body1">{truncateLabel(task.name)}</Typography>
           {getStatusIcon(task.status, 20)}
         </Box>
       ))}
