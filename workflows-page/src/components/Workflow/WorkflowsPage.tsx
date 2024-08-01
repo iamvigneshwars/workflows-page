@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import VisitSelect from "./VisitSelect";
+import NamespaceSelect from "./SelectNamespace";
 import WorkflowList from "./WorkflowAccordian";
-import Test from "./SelectNamespace";
+
 interface GetVisitsResponse {
   visits: Visit[];
 }
@@ -94,11 +95,12 @@ const Workflows: React.FC = () => {
         p={1}
       >
         <Grid item xs={12} sm={6} md={2}>
-          <VisitSelect
+          {/* <VisitSelect
             visits={visits}
             selectedVisitId={selectedVisitId}
             handleChange={handleChange}
-          />
+          /> */}
+          <NamespaceSelect />
         </Grid>
         <Grid
           item
