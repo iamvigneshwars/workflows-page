@@ -17,6 +17,9 @@ const VisitSelect: React.FC<VisitSelectProps> = ({
   selectedVisitId,
   handleChange,
 }) => {
+  const uniqueVisits = visits.filter(
+    (visit, index, self) => index === self.findIndex((v) => v.id === visit.id)
+  );
   return (
     <Box sx={{ maxWidth: 120 }}>
       <FormControl fullWidth>
@@ -28,7 +31,7 @@ const VisitSelect: React.FC<VisitSelectProps> = ({
           label="Visits"
           onChange={handleChange}
         >
-          {visits.map((visit) => (
+          {uniqueVisits.map((visit) => (
             <MenuItem key={visit.id} value={visit.id}>
               {visit.name}
             </MenuItem>

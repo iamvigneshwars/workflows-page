@@ -12,37 +12,7 @@ import React, { useEffect, useState } from "react";
 import VisitSelect from "./VisitSelect";
 import WorkflowList from "./WorkflowAccordian";
 import request from "graphql-request";
-import { gql } from "graphql-request";
-
-export const GET_VISITS = gql`
-  query GetVisits(
-    $completed: Boolean
-    $running: Boolean
-    $pending: Boolean
-    $failed: Boolean
-  ) {
-    visits {
-      id
-      name
-      workflows(
-        completed: $completed
-        running: $running
-        pending: $pending
-        failed: $failed
-      ) {
-        id
-        status
-        tasks {
-          id
-          parent_task
-          workflow_id
-          name
-          status
-        }
-      }
-    }
-  }
-`;
+import { gql_query } from "../utils/query";
 
 interface GetVisitsResponse {
   visits: Visit[];
@@ -58,6 +28,7 @@ export interface Task {
 
 export interface Workflow {
   id: number;
+  name: string;
   status: string;
   tasks: Task[];
 }
@@ -65,7 +36,17 @@ export interface Workflow {
 export interface Visit {
   id: number;
   name: string;
-  workflows: Workflow[];
+  workflows: {
+    edges: {
+      cursor: string;
+      node: Workflow;
+    }[];
+    pageInfo: {
+      endCursor: string | null;
+      hasNextPage: boolean;
+      continue: string | null;
+    };
+  };
 }
 
 const endpoint: string = "http://localhost:4001";
@@ -80,16 +61,38 @@ const Workflows: React.FC = () => {
   const [running, setRunning] = useState<boolean>(true);
   const [pending, setPending] = useState<boolean>(true);
   const [failed, setFailed] = useState<boolean>(true);
+  const [endCursor, setEndCursor] = useState<string | null>(null);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
 
-  const fetchData = async (filters = {}) => {
+  const fetchData = async (filters = {}, cursor: string | null = null) => {
     setLoading(true);
     try {
+      const variables = {
+        limit: 10,
+        after: cursor,
+        ...filters,
+      };
       const data = await request<GetVisitsResponse>(
         endpoint,
-        GET_VISITS,
-        filters
+        gql_query,
+        variables
       );
-      setVisits(data.visits);
+      const newVisits = data.visits.map((visit) => ({
+        ...visit,
+        workflows: {
+          edges: visit.workflows.edges,
+          pageInfo: visit.workflows.pageInfo,
+        },
+      }));
+
+      setVisits((prevVisits) =>
+        cursor ? [...prevVisits, ...newVisits] : newVisits
+      );
+      setEndCursor(selectedVisit?.workflows.pageInfo.endCursor || null);
+      setHasNextPage(selectedVisit?.workflows.pageInfo.hasNextPage || false);
+      // setEndCursor(data.visits[0]?.workflows.pageInfo.endCursor || null);
+      // setHasNextPage(data.visits[0]?.workflows.pageInfo.hasNextPage || false);
+
       if (selectedVisitId) {
         const visit =
           data.visits.find((visit) => visit.id === parseInt(selectedVisitId)) ||
@@ -137,7 +140,13 @@ const Workflows: React.FC = () => {
     }
   };
 
-  if (loading) return <p>loading...</p>;
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchData({ completed, running, pending, failed }, endCursor);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -213,6 +222,11 @@ const Workflows: React.FC = () => {
       <Grid container py={2} px={1}>
         <WorkflowList visit={selectedVisit} />
       </Grid>
+      {hasNextPage && (
+        <Box display="flex" justifyContent="center" py={2}>
+          <button onClick={loadMore}>Load More</button>
+        </Box>
+      )}
     </Container>
   );
 };

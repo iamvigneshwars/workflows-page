@@ -24,22 +24,22 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
   return (
     <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
-      {visit?.workflows?.map((workflow) => {
+      {visit?.workflows?.edges.map((edge) => {
         return (
-          <Accordion key={workflow.id}>
+          <Accordion key={edge.node.id}>
             <AccordionSummary
-              expandIcon={getStatusIcon(workflow.status)}
+              expandIcon={getStatusIcon(edge.node.status)}
               sx={{
                 "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
                   transform: "none",
                 },
               }}
             >
-              <Typography>Workflow {workflow.id}</Typography>
+              <Typography>{edge.node.name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Box maxWidth="95%">
-                <DAGGraph tasks={workflow.tasks} />
+                <DAGGraph tasks={edge.node.tasks} />
               </Box>
             </AccordionDetails>
           </Accordion>
