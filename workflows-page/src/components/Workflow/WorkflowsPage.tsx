@@ -44,7 +44,8 @@ export interface Visit {
 }
 
 const Workflows: React.FC = () => {
-  const [selectedNamesapce, setSelectedNamespace] = useState<string>("");
+  const [selectedNamespace, setSelectedNamespace] = useState<string>("");
+  const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [completed, setCompleted] = useState<boolean>(true);
   const [running, setRunning] = useState<boolean>(true);
   const [pending, setPending] = useState<boolean>(true);
@@ -85,7 +86,7 @@ const Workflows: React.FC = () => {
       >
         <Grid item xs={12} sm={6} md={2}>
           <NamespaceSelect
-            selectedNamespace={selectedNamesapce}
+            selectedNamespace={selectedNamespace}
             handleChange={handleNamespaceChange}
           />
         </Grid>
