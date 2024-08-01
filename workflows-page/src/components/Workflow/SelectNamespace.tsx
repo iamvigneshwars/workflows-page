@@ -11,10 +11,16 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 
-const NamespaceSelect: React.FC = () => {
-  const [namespaces, setNamespaces] = useState<string[]>([]);
-  const [selectedNamespace, setSelectedNamespace] = useState<string>("");
+interface NamespaceSelectProps {
+  selectedNamespace: string;
+  handleChange: (event: SelectChangeEvent) => void;
+}
 
+const NamespaceSelect: React.FC<NamespaceSelectProps> = ({
+  selectedNamespace,
+  handleChange,
+}) => {
+  const [namespaces, setNamespaces] = useState<string[]>([]);
   const queryData = useLazyLoadQuery<NamespacesQuery>(NAMESPACES_QUERY, {});
 
   useEffect(() => {
@@ -25,10 +31,6 @@ const NamespaceSelect: React.FC = () => {
       setNamespaces(validNamespaces);
     }
   }, [queryData]);
-
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedNamespace(event.target.value);
-  };
 
   return (
     <Box sx={{ maxWidth: 150 }}>

@@ -8,14 +8,9 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import VisitSelect from "./VisitSelect";
+import React, { useState } from "react";
 import NamespaceSelect from "./SelectNamespace";
 import WorkflowList from "./WorkflowAccordian";
-
-interface GetVisitsResponse {
-  visits: Visit[];
-}
 
 export interface Task {
   id: number;
@@ -49,20 +44,14 @@ export interface Visit {
 }
 
 const Workflows: React.FC = () => {
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
-  const [selectedVisitId, setSelectedVisitId] = useState<string>("");
+  const [selectedNamesapce, setSelectedNamespace] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(true);
   const [running, setRunning] = useState<boolean>(true);
   const [pending, setPending] = useState<boolean>(true);
   const [failed, setFailed] = useState<boolean>(true);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    const selectedVisitId: string = event.target.value as string;
-    const visit =
-      visits.find((visit) => visit.id === parseInt(event.target.value)) || null;
-    setSelectedVisitId(selectedVisitId);
-    setSelectedVisit(visit);
+  const handleNamespaceChange = (event: SelectChangeEvent<string>) => {
+    setSelectedNamespace(event.target.value);
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,12 +84,10 @@ const Workflows: React.FC = () => {
         p={1}
       >
         <Grid item xs={12} sm={6} md={2}>
-          {/* <VisitSelect
-            visits={visits}
-            selectedVisitId={selectedVisitId}
-            handleChange={handleChange}
-          /> */}
-          <NamespaceSelect />
+          <NamespaceSelect
+            selectedNamespace={selectedNamesapce}
+            handleChange={handleNamespaceChange}
+          />
         </Grid>
         <Grid
           item
@@ -157,9 +144,8 @@ const Workflows: React.FC = () => {
       </Grid>
       <Divider variant="middle" />
       <Grid container py={2} px={1}>
-        <WorkflowList visit={selectedVisit} />
+        {/* <WorkflowList visit={selectedVisit} /> */}
       </Grid>
-      {/* <VisitsComponent /> */}
     </Container>
   );
 };
