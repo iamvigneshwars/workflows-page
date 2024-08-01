@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React from "react";
-import { Visit } from "./Workflows";
+import { Visit } from "./WorkflowsPage";
 
 interface VisitSelectProps {
   visits: Visit[];

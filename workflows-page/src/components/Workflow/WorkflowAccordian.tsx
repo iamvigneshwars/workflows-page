@@ -7,10 +7,10 @@ import {
   Box,
   styled,
 } from "@mui/material";
-import { Visit } from "./Workflows";
+import { Visit } from "./WorkflowsPage";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import DAGGraph from "./TasksDAG";
-import { getStatusIcon } from "../utils/helper";
+import { getStatusIcon } from "../../utils/helper";
 
 interface VariantsProps {
   visit: Visit | null;

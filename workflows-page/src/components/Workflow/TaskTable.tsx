@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { Task } from "./Workflows";
-import { getStatusIcon } from "../utils/helper";
-import { truncateLabel } from "../utils/helper";
+import { Task } from "./WorkflowsPage";
+import { getStatusIcon } from "../../utils/helper";
+import { truncateLabel } from "../../utils/helper";
 
 interface TaskTableProps {
   tasks: Task[];

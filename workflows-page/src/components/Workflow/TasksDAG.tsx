@@ -13,9 +13,10 @@ import ReactFlow, {
   ReactFlowInstance,
   getRectOfNodes,
 } from "react-flow-renderer";
-import { applyDagreLayout } from "../utils/layout";
+import { applyDagreLayout } from "../../utils/layout";
 import CustomNode from "./CustomNode";
-import { Task } from "./Workflows";
+import { Task } from "./WorkflowsPage";
+
 import TaskTable from "./TaskTable";
 
 interface TaskNode extends Task {
