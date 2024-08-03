@@ -8,9 +8,11 @@ export const WORKFLOWS_QUERY = graphql`
     $pending: Boolean
     $failed: Boolean
     $namespace: String!
+    $after: String
   ) {
     workflows(
       limit: $limit
+      after: $after
       completed: $completed
       running: $running
       pending: $pending
