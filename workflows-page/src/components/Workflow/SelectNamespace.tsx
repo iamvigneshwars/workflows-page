@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   FormControl,
@@ -8,7 +8,6 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import useFetchNamespaces from "../../hooks/useFetchNamespaces";
-import useFetchWorkflows from "../../hooks/useFetchWorkflows";
 
 interface NamespaceSelectProps {
   selectedNamespace: string;
@@ -18,8 +17,6 @@ interface NamespaceSelectProps {
 const NamespaceSelect: React.FC<NamespaceSelectProps> = React.memo(
   ({ selectedNamespace, handleChange }) => {
     const namespaces = useFetchNamespaces();
-
-    useFetchWorkflows();
 
     return (
       <Box sx={{ maxWidth: 150 }}>
