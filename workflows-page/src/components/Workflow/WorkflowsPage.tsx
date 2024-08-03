@@ -141,7 +141,7 @@ const Workflows: React.FC = () => {
       </Grid>
       <Divider variant="middle" />
       <Grid container py={2} px={1}>
-        {/* <WorkflowList workflows={workflows} /> */}
+        <WorkflowList workflows={workflows} />
       </Grid>
     </Container>
   );

@@ -7,13 +7,13 @@ import {
   Box,
   styled,
 } from "@mui/material";
-import { Visit } from "./WorkflowsPage";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import DAGGraph from "./TasksDAG";
 import { getStatusIcon } from "../../utils/helper";
+import { Workflow } from "./WorkflowsPage";
 
-interface VariantsProps {
-  visit: Visit | null;
+interface WorkflowsProps {
+  workflows: Workflow[];
 }
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
@@ -21,25 +21,25 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-const WorkflowList: React.FC<VariantsProps> = ({ visit }) => {
+const WorkflowList: React.FC<WorkflowsProps> = ({ workflows }) => {
   return (
     <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
-      {visit?.workflows?.edges.map((edge) => {
+      {workflows.map((workflow) => {
         return (
-          <Accordion key={edge.node.id}>
+          <Accordion key={workflow.id}>
             <AccordionSummary
-              expandIcon={getStatusIcon(edge.node.status)}
+              expandIcon={getStatusIcon(workflow.status)}
               sx={{
                 "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
                   transform: "none",
                 },
               }}
             >
-              <Typography>{edge.node.name}</Typography>
+              <Typography>{workflow.name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Box maxWidth="95%">
-                <DAGGraph tasks={edge.node.tasks} />
+                <DAGGraph tasks={workflow.tasks} />
               </Box>
             </AccordionDetails>
           </Accordion>

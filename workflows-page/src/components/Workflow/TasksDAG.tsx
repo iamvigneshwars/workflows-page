@@ -16,7 +16,6 @@ import ReactFlow, {
 import { applyDagreLayout } from "../../utils/layout";
 import CustomNode from "./CustomNode";
 import { Task } from "./WorkflowsPage";
-
 import TaskTable from "./TaskTable";
 
 interface TaskNode extends Task {
@@ -76,6 +75,10 @@ const generateNodesAndEdges = (
 
   traverse(taskNodes);
   return { nodes, edges };
+};
+
+const nodeTypes = {
+  custom: CustomNode,
 };
 
 interface DAGGraphProps {
@@ -153,7 +156,7 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
             <ReactFlow
               nodes={layoutedNodes}
               edges={layoutedEdges}
-              nodeTypes={{ custom: CustomNode }}
+              nodeTypes={nodeTypes}
               onInit={onInit}
               nodesDraggable={false}
               nodesConnectable={false}
@@ -164,7 +167,7 @@ const DAGGraph: React.FC<DAGGraphProps> = ({ tasks }) => {
               zoomOnDoubleClick={false}
               style={{ width: "100%", height: "100%" }}
               preventScrolling={false}
-            ></ReactFlow>
+            />
           )}
         </div>
       </ReactFlowProvider>
