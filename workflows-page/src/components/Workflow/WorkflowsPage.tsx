@@ -8,11 +8,11 @@ import {
   FormControlLabel,
   Checkbox,
   SelectChangeEvent,
-  Button,
 } from "@mui/material";
 import NamespaceSelect from "./SelectNamespace";
 import WorkflowList from "./WorkflowAccordian";
 import useFetchWorkflows from "../../hooks/useFetchWorkflows";
+import { useInView } from "react-intersection-observer";
 
 export interface Task {
   id: number;
@@ -85,11 +85,18 @@ const Workflows = () => {
     });
   };
 
-  const handleLoadMore = () => {
-    startTransition(() => {
-      setContinueValue(hasContinue as string);
-    });
-  };
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
+  useEffect(() => {
+    if (inView && hasContinue) {
+      startTransition(() => {
+        setContinueValue(hasContinue as string);
+      });
+    }
+  }, [inView, hasContinue]);
 
   return (
     <Container sx={{ p: 1, py: 4 }}>
@@ -164,10 +171,8 @@ const Workflows = () => {
         <WorkflowList workflows={allWorkflows} />
       </Grid>
       {hasContinue && (
-        <Box display="flex" justifyContent="center" mt={2}>
-          <Button variant="contained" onClick={handleLoadMore}>
-            Load More
-          </Button>
+        <Box ref={ref} display="flex" justifyContent="center" mt={2}>
+          <div>Loading...</div>
         </Box>
       )}
     </Container>

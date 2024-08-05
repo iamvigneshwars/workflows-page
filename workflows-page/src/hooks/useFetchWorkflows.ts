@@ -28,7 +28,7 @@ export default function useFetchWorkflows({
   const queryData = useLazyLoadQuery<WorkflowsQuery>(WORKFLOWS_QUERY, {
     namespace,
     continue: continueValue,
-    limit: 10,
+    limit: 5,
     completed,
     failed,
     running,
