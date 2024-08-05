@@ -7,6 +7,7 @@ import { Workflow } from "../components/Workflow/WorkflowsPage";
 
 interface UseFetchWorkflowsProps {
   namespace: string;
+  continueValue: string | null;
   completed: boolean;
   running: boolean;
   pending: boolean;
@@ -15,16 +16,18 @@ interface UseFetchWorkflowsProps {
 
 export default function useFetchWorkflows({
   namespace,
+  continueValue,
   completed,
   running,
   pending,
   failed,
 }: UseFetchWorkflowsProps) {
   const [hasContinue, setContinue] = useState<string | null | undefined>(null);
-  const [workflows, setWorkflows] = useState<Workflow[]>([]);
+  const [newWorkflows, setNewWorkflows] = useState<Workflow[]>([]);
 
   const queryData = useLazyLoadQuery<WorkflowsQuery>(WORKFLOWS_QUERY, {
     namespace,
+    continue: continueValue,
     limit: 10,
     completed,
     failed,
@@ -40,8 +43,8 @@ export default function useFetchWorkflows({
         ?.map((edge) => edge?.node)
         .filter((node): node is Workflow => node !== undefined) || [];
 
-    setWorkflows(workflowNodes);
+    setNewWorkflows(workflowNodes);
   }, [queryData, namespace, completed, running, pending, failed]);
 
-  return { hasContinue, workflows };
+  return { hasContinue, newWorkflows };
 }

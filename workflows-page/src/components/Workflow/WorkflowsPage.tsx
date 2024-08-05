@@ -1,4 +1,4 @@
-import React, { startTransition, useState } from "react";
+import { ChangeEvent, startTransition, useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   Checkbox,
   SelectChangeEvent,
+  Button,
 } from "@mui/material";
 import NamespaceSelect from "./SelectNamespace";
 import WorkflowList from "./WorkflowAccordian";
@@ -28,28 +29,40 @@ export interface Workflow {
   tasks: Task[];
 }
 
-const Workflows: React.FC = () => {
+const Workflows = () => {
   const [selectedNamespace, setSelectedNamespace] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(true);
   const [running, setRunning] = useState<boolean>(true);
   const [pending, setPending] = useState<boolean>(true);
   const [failed, setFailed] = useState<boolean>(true);
+  const [continueValue, setContinueValue] = useState<string | null>(null);
+  const [allWorkflows, setAllWorkflows] = useState<Workflow[]>([]);
 
-  const { workflows } = useFetchWorkflows({
+  const { hasContinue, newWorkflows } = useFetchWorkflows({
     namespace: selectedNamespace,
+    continueValue,
     completed,
     running,
     pending,
     failed,
   });
 
+  useEffect(() => {
+    if (continueValue === null) {
+      setAllWorkflows(newWorkflows);
+    } else {
+      setAllWorkflows((prevWorkflows) => [...prevWorkflows, ...newWorkflows]);
+    }
+  }, [newWorkflows]);
+
   const handleNamespaceChange = (event: SelectChangeEvent<string>) => {
     startTransition(() => {
       setSelectedNamespace(event.target.value as string);
+      setContinueValue(null);
     });
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     startTransition(() => {
       switch (name) {
@@ -68,6 +81,13 @@ const Workflows: React.FC = () => {
         default:
           break;
       }
+      setContinueValue(null);
+    });
+  };
+
+  const handleLoadMore = () => {
+    startTransition(() => {
+      setContinueValue(hasContinue as string);
     });
   };
 
@@ -141,8 +161,15 @@ const Workflows: React.FC = () => {
       </Grid>
       <Divider variant="middle" />
       <Grid container py={2} px={1}>
-        <WorkflowList workflows={workflows} />
+        <WorkflowList workflows={allWorkflows} />
       </Grid>
+      {hasContinue && (
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Button variant="contained" onClick={handleLoadMore}>
+            Load More
+          </Button>
+        </Box>
+      )}
     </Container>
   );
 };
