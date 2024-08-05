@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d236c537bdef1986a89364661311e006>>
+ * @generated SignedSource<<d0f338823e6066e42a5a27dfd1e4ce25>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,8 +10,8 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 export type WorkflowsQuery$variables = {
-  after?: string | null | undefined;
   completed?: boolean | null | undefined;
+  continue?: string | null | undefined;
   failed?: boolean | null | undefined;
   limit?: number | null | undefined;
   namespace: string;
@@ -36,7 +36,6 @@ export type WorkflowsQuery$data = {
     } | null | undefined> | null | undefined;
     readonly pageInfo: {
       readonly continue: string | null | undefined;
-      readonly hasNextPage: boolean | null | undefined;
     } | null | undefined;
   } | null | undefined;
 };
@@ -49,12 +48,12 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "after"
+  "name": "completed"
 },
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "completed"
+  "name": "continue"
 },
 v2 = {
   "defaultValue": null,
@@ -108,13 +107,13 @@ v10 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "after",
-        "variableName": "after"
+        "name": "completed",
+        "variableName": "completed"
       },
       {
         "kind": "Variable",
-        "name": "completed",
-        "variableName": "completed"
+        "name": "continue",
+        "variableName": "continue"
       },
       {
         "kind": "Variable",
@@ -160,13 +159,6 @@ v10 = [
             "args": null,
             "kind": "ScalarField",
             "name": "continue",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "hasNextPage",
             "storageKey": null
           }
         ],
@@ -252,27 +244,27 @@ return {
     "argumentDefinitions": [
       (v3/*: any*/),
       (v1/*: any*/),
+      (v0/*: any*/),
       (v6/*: any*/),
       (v5/*: any*/),
       (v2/*: any*/),
-      (v4/*: any*/),
-      (v0/*: any*/)
+      (v4/*: any*/)
     ],
     "kind": "Operation",
     "name": "WorkflowsQuery",
     "selections": (v10/*: any*/)
   },
   "params": {
-    "cacheID": "2bf2e99e3dad1335081919d5971cc865",
+    "cacheID": "855daa8681d94a7caab0677e9ba8b0ed",
     "id": null,
     "metadata": {},
     "name": "WorkflowsQuery",
     "operationKind": "query",
-    "text": "query WorkflowsQuery(\n  $limit: Int\n  $completed: Boolean\n  $running: Boolean\n  $pending: Boolean\n  $failed: Boolean\n  $namespace: String!\n  $after: String\n) {\n  workflows(limit: $limit, after: $after, completed: $completed, running: $running, pending: $pending, failed: $failed, namespace: $namespace) {\n    pageInfo {\n      continue\n      hasNextPage\n    }\n    edges {\n      node {\n        id\n        name\n        tasks {\n          id\n          workflow_id\n          name\n          status\n          parent_task\n        }\n        status\n      }\n    }\n  }\n}\n"
+    "text": "query WorkflowsQuery(\n  $limit: Int\n  $continue: String\n  $completed: Boolean\n  $running: Boolean\n  $pending: Boolean\n  $failed: Boolean\n  $namespace: String!\n) {\n  workflows(limit: $limit, continue: $continue, completed: $completed, running: $running, pending: $pending, failed: $failed, namespace: $namespace) {\n    pageInfo {\n      continue\n    }\n    edges {\n      node {\n        id\n        name\n        tasks {\n          id\n          workflow_id\n          name\n          status\n          parent_task\n        }\n        status\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ec3bfac79cfe3dbfede79abb646dea52";
+(node as any).hash = "ee16f816785cbd6926605440cb50d911";
 
 export default node;

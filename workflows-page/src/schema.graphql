@@ -21,8 +21,6 @@ type WorkflowEdge {
 }
 
 type PageInfo {
-  endCursor: String
-  hasNextPage: Boolean
   continue: String
 }
 
@@ -38,7 +36,7 @@ type Query {
   namespaces: [String]
   workflows(
     limit: Int
-    after: String
+    continue: String
     completed: Boolean
     running: Boolean
     pending: Boolean

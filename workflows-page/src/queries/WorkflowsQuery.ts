@@ -3,16 +3,16 @@ import { graphql } from "react-relay";
 export const WORKFLOWS_QUERY = graphql`
   query WorkflowsQuery(
     $limit: Int
+    $continue: String
     $completed: Boolean
     $running: Boolean
     $pending: Boolean
     $failed: Boolean
     $namespace: String!
-    $after: String
   ) {
     workflows(
       limit: $limit
-      after: $after
+      continue: $continue
       completed: $completed
       running: $running
       pending: $pending
@@ -21,7 +21,6 @@ export const WORKFLOWS_QUERY = graphql`
     ) {
       pageInfo {
         continue
-        hasNextPage
       }
       edges {
         node {
