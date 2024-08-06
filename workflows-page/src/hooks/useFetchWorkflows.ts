@@ -2,6 +2,10 @@
 import { useLazyLoadQuery } from "react-relay";
 import { WorkflowsQuery } from "../queries/__generated__/WorkflowsQuery.graphql";
 import { WORKFLOWS_QUERY } from "../queries/WorkflowsQuery";
+import type {
+  WorkflowsQuery$data,
+  WorkflowsQuery$variables,
+} from "../queries/__generated__/WorkflowsQuery.graphql";
 import { useEffect, useState } from "react";
 import { Workflow } from "../components/Workflow/WorkflowsPage";
 

@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Workflows from "./components/Workflow/WorkflowsPage";
 import Form from "./components/JsonForms/Form";
+import WorkflowTemplates from "./components/Workflow/WorkflowTemplatesPage";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -21,8 +22,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Form />
+      {/* <Form /> */}
       {/* <Workflows /> */}
+      <WorkflowTemplates />
     </ThemeProvider>
   );
 }
