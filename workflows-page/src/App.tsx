@@ -3,7 +3,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Workflows from "./components/Workflow/WorkflowsPage";
-import Form from "./components/JsonForms/Form";
 import WorkflowTemplates from "./components/Workflow/WorkflowTemplatesPage";
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* <Form /> */}
       {/* <Workflows /> */}
       <WorkflowTemplates />
     </ThemeProvider>

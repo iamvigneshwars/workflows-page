@@ -17,17 +17,19 @@ const WorkflowTemplates = () => {
       <Box
         display="flex"
         flexWrap="wrap"
-        gap={2}
+        gap={1}
         padding={2}
         overflow="auto"
         justifyContent={"center"}
       >
         {templates?.map((template, index) => (
-          <CustomPaper elevation={8} key={index} sx={{ mb: 2, p: 2 }}>
-            <Box display={"flex"} justifyContent={"center"}>
-              {template?.name}
-            </Box>
-          </CustomPaper>
+          <Box key={index} sx={{ mb: 2, p: 1 }}>
+            <CustomPaper elevation={4}>
+              <Box display={"flex"} justifyContent={"center"}>
+                {template?.name}
+              </Box>
+            </CustomPaper>
+          </Box>
         ))}
       </Box>
     </Container>
