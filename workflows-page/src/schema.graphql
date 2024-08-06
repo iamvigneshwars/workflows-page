@@ -3,8 +3,10 @@ Indicates exactly one field must be supplied and this field must not be `null`.
 """
 directive @oneOf on INPUT_OBJECT
 
+scalar JSON
+
 type Workflow {
-  id: Int
+  id: String
   name: String
   tasks: [Task]
   status: String
@@ -25,11 +27,17 @@ type PageInfo {
 }
 
 type Task {
-  id: Int
+  id: String
   workflow_id: Int
   name: String
   status: String
   parent_task: Int
+}
+
+type Template {
+  name: String
+  jsonSchema: JSON
+  UISchema: JSON
 }
 
 type Query {
@@ -43,4 +51,5 @@ type Query {
     failed: Boolean
     namespace: String!
   ): WorkflowConnection
+  workflowTemplates: [Template]
 }

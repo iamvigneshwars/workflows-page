@@ -6,7 +6,7 @@ import {
   FetchFunction,
 } from "relay-runtime";
 
-const HTTP_ENDPOINT = "http://localhost:4000";
+const HTTP_ENDPOINT = "http://localhost:4001";
 
 const fetchFn: FetchFunction = async (request, variables) => {
   return fetch(HTTP_ENDPOINT, {

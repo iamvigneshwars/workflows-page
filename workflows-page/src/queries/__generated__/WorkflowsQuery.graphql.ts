@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d0f338823e6066e42a5a27dfd1e4ce25>>
+ * @generated SignedSource<<34b9d6215892c6d222813e392ad1f32b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -22,11 +22,11 @@ export type WorkflowsQuery$data = {
   readonly workflows: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly id: number | null | undefined;
+        readonly id: string | null | undefined;
         readonly name: string | null | undefined;
         readonly status: string | null | undefined;
         readonly tasks: ReadonlyArray<{
-          readonly id: number | null | undefined;
+          readonly id: string | null | undefined;
           readonly name: string | null | undefined;
           readonly parent_task: number | null | undefined;
           readonly status: string | null | undefined;
