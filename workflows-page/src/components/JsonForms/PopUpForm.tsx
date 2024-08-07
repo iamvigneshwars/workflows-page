@@ -16,7 +16,7 @@ interface PopUpFormProps {
   ui_schema: UISchemaElement | null;
 }
 
-const PopUpForm: React.FC<PopUpFormProps> = ({
+const ModalForm: React.FC<PopUpFormProps> = ({
   open,
   onClose,
   json_schema,
@@ -40,4 +40,4 @@ const PopUpForm: React.FC<PopUpFormProps> = ({
   );
 };
 
-export default PopUpForm;
+export default ModalForm;

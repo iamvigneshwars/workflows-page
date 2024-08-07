@@ -1,6 +1,6 @@
 import useFetchWorkflowTemplates from "../../hooks/useFetchWorkflowTemplates";
 import { Box, Container, Paper, styled } from "@mui/material";
-import PopUpForm from "../JsonForms/PopUpForm";
+import ModalForm from "../JsonForms/PopUpForm";
 import { useState } from "react";
 
 const WorkflowTemplates = () => {
@@ -42,7 +42,7 @@ const WorkflowTemplates = () => {
                 {template?.name}
               </Box>
             </CustomPaper>
-            <PopUpForm
+            <ModalForm
               open={openModalIndex === index}
               onClose={handleClose}
               json_schema={template?.jsonSchema}
