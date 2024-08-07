@@ -1,5 +1,5 @@
 import useFetchWorkflowTemplates from "../../hooks/useFetchWorkflowTemplates";
-import { Box, Container, Divider, Paper, styled } from "@mui/material";
+import { Box, Container, Paper, styled } from "@mui/material";
 import PopUpForm from "../JsonForms/PopUpForm";
 import { useState } from "react";
 
@@ -22,6 +22,7 @@ const WorkflowTemplates = () => {
     padding: theme.spacing(2),
     ...theme.typography.body2,
     textAlign: "center",
+    cursor: "pointer",
   }));
 
   return (
