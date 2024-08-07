@@ -40,6 +40,18 @@ type Template {
   UISchema: JSON
 }
 
+type UserWorkflowTemplate {
+  namespace: String
+  template: JSON
+}
+
+type Mutation {
+  submitWorkflowTemplate(
+    namespace: String!
+    inputTemplate: JSON!
+  ): UserWorkflowTemplate
+}
+
 type Query {
   namespaces: [String]
   workflows(
