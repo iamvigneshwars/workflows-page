@@ -40,7 +40,7 @@ const Workflows = () => {
 
   const { hasContinue, newWorkflows } = useFetchWorkflows({
     namespace: selectedNamespace,
-    continueValue,
+    continue: continueValue,
     completed,
     running,
     pending,

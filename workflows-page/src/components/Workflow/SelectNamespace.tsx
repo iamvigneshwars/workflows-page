@@ -29,11 +29,13 @@ const NamespaceSelect: React.FC<NamespaceSelectProps> = React.memo(
             label="Namespaces"
             onChange={handleChange}
           >
-            {namespaces.map((namespace) => (
-              <MenuItem key={namespace} value={namespace}>
-                {namespace}
-              </MenuItem>
-            ))}
+            {namespaces
+              ?.filter((namespace): namespace is string => !!namespace)
+              .map((namespace) => (
+                <MenuItem key={namespace} value={namespace}>
+                  {namespace}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       </Box>

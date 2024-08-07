@@ -1,30 +1,18 @@
 import { useLazyLoadQuery } from "react-relay";
 import { WorkflowsQuery } from "../queries/__generated__/WorkflowsQuery.graphql";
 import { WORKFLOWS_QUERY } from "../queries/WorkflowsQuery";
-import type {
-  WorkflowsQuery$data,
-  WorkflowsQuery$variables,
-} from "../queries/__generated__/WorkflowsQuery.graphql";
+import type { WorkflowsQuery$variables } from "../queries/__generated__/WorkflowsQuery.graphql";
 import { useEffect, useState } from "react";
 import { Workflow } from "../components/Workflow/WorkflowsPage";
 
-interface UseFetchWorkflowsProps {
-  namespace: string;
-  continueValue: string | null;
-  completed: boolean;
-  running: boolean;
-  pending: boolean;
-  failed: boolean;
-}
-
 export default function useFetchWorkflows({
   namespace,
-  continueValue,
+  continue: continueValue,
   completed,
   running,
   pending,
   failed,
-}: UseFetchWorkflowsProps) {
+}: WorkflowsQuery$variables) {
   const [hasContinue, setContinue] = useState<string | null | undefined>(null);
   const [newWorkflows, setNewWorkflows] = useState<Workflow[]>([]);
 
