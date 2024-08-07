@@ -1,0 +1,55 @@
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+scalar JSON
+
+type Workflow {
+  id: String
+  name: String
+  tasks: [Task]
+  status: String
+}
+
+type WorkflowConnection {
+  edges: [WorkflowEdge]
+  pageInfo: PageInfo
+}
+
+type WorkflowEdge {
+  cursor: String
+  node: Workflow
+}
+
+type PageInfo {
+  continue: String
+}
+
+type Task {
+  id: String
+  workflow_id: Int
+  name: String
+  status: String
+  parent_task: Int
+}
+
+type Template {
+  name: String
+  jsonSchema: JSON
+  UISchema: JSON
+}
+
+type Query {
+  namespaces: [String]
+  workflows(
+    limit: Int
+    continue: String
+    completed: Boolean
+    running: Boolean
+    pending: Boolean
+    failed: Boolean
+    namespace: String!
+  ): WorkflowConnection
+  workflowTemplates: [Template]
+}

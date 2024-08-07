@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Handle, Position } from "react-flow-renderer";
-import { getStatusIcon } from "../utils/helper";
-import { truncateLabel } from "../utils/helper";
+import { getStatusIcon } from "../../utils/helper";
+import { truncateLabel } from "../../utils/helper";
 interface CustomNodeProps {
   data: {
     label: string;
