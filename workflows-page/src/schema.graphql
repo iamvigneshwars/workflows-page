@@ -28,10 +28,10 @@ type PageInfo {
 
 type Task {
   id: String
-  workflow_id: Int
+  workflow_id: String
   name: String
   status: String
-  parent_task: Int
+  parent_task: String
 }
 
 type Template {

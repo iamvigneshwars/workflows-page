@@ -15,15 +15,15 @@ import useFetchWorkflows from "../../hooks/useFetchWorkflows";
 import { useInView } from "react-intersection-observer";
 
 export interface Task {
-  id: number;
-  workflow_id: number;
+  id: string;
+  workflow_id: string;
   name: string;
   status: string;
-  parent_task: number;
+  parent_task: string;
 }
 
 export interface Workflow {
-  id: number;
+  id: string;
   name: string;
   status: string;
   tasks: Task[];

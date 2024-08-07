@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<34b9d6215892c6d222813e392ad1f32b>>
+ * @generated SignedSource<<ed5c57689995323a9e767437b97a418a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,9 +28,9 @@ export type WorkflowsQuery$data = {
         readonly tasks: ReadonlyArray<{
           readonly id: string | null | undefined;
           readonly name: string | null | undefined;
-          readonly parent_task: number | null | undefined;
+          readonly parent_task: string | null | undefined;
           readonly status: string | null | undefined;
-          readonly workflow_id: number | null | undefined;
+          readonly workflow_id: string | null | undefined;
         } | null | undefined> | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;

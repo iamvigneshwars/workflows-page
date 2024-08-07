@@ -1,4 +1,3 @@
-// hooks/useFetchWorkflows.ts
 import { useLazyLoadQuery } from "react-relay";
 import { WorkflowsQuery } from "../queries/__generated__/WorkflowsQuery.graphql";
 import { WORKFLOWS_QUERY } from "../queries/WorkflowsQuery";
