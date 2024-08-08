@@ -8,7 +8,8 @@
             "ms-kubernetes-tools.vscode-kubernetes-tools",
             "tamasfe.even-better-toml",
             "tsandall.opa",
-            "esbenp.prettier-vscode"
+            "esbenp.prettier-vscode",
+            "dbaeumer.vscode-eslint"
         ]
       }
     },
