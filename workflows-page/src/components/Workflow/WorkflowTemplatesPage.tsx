@@ -1,6 +1,6 @@
 import useFetchWorkflowTemplates from "../../hooks/useFetchWorkflowTemplates";
 import { Box, Container, Paper, styled } from "@mui/material";
-import ModalForm from "../JsonForms/PopUpForm";
+import ModalForm from "../JsonForms/ModelForm";
 import { useState } from "react";
 
 const WorkflowTemplates = () => {
