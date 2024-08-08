@@ -29,7 +29,7 @@ const ModalForm: React.FC<PopUpFormProps> = ({
   const [commitMutation, isMutationInFlight] =
     useMutation<WorkflowTemplateMutation>(TEMPLATES_MUTATION);
 
-  const handleFormDataChange = (data: any) => {
+  const handleFormDataChange = (data: object) => {
     setFormData(data);
   };
 

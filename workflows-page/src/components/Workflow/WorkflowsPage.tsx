@@ -53,6 +53,7 @@ const Workflows = () => {
     } else {
       setAllWorkflows((prevWorkflows) => [...prevWorkflows, ...newWorkflows]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newWorkflows]);
 
   const handleNamespaceChange = (event: SelectChangeEvent<string>) => {

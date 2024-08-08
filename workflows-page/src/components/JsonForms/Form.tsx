@@ -11,7 +11,7 @@ const initialData = {};
 interface FormProps {
   json_schema: JsonSchema;
   ui_schema: UISchemaElement | null;
-  onDataChange: (data: any) => void;
+  onDataChange: (data: object) => void;
 }
 
 const Form: React.FC<FormProps> = ({
@@ -21,7 +21,7 @@ const Form: React.FC<FormProps> = ({
 }) => {
   const [data, setData] = useState(initialData);
 
-  const handleChange = ({ data }: { data: any }) => {
+  const handleChange = ({ data }: { data: object }) => {
     setData(data);
     onDataChange(data);
   };
