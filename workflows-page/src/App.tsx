@@ -21,8 +21,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Workflows />
-      {/* <WorkflowTemplates /> */}
+      {/* <Workflows /> */}
+      <WorkflowTemplates />
     </ThemeProvider>
   );
 }

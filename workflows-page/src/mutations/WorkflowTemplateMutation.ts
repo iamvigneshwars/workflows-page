@@ -1,6 +1,6 @@
 import { graphql } from "react-relay";
 
-export const TEMPLATES_QUERY = graphql`
+export const TEMPLATES_MUTATION = graphql`
   mutation WorkflowTemplateMutation(
     $namespace: String!
     $inputTemplate: JSON!
