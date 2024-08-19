@@ -14,7 +14,7 @@
       }
     },
     "features": {
-      "ghcr.io/devcontainers/features/common-utils:2.4.4": {
+      "ghcr.io/devcontainers/features/common-utils:2.5.0": {
         "username": "none",
         "upgradePackages": false
       }
